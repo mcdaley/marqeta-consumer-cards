@@ -1,6 +1,9 @@
 //-----------------------------------------------------------------------------
 // src/config/mongodb-dao.ts
 //-----------------------------------------------------------------------------
+import AppConfig  from './app-config'
+const  appConfig  = AppConfig.getInstance()
+
 import { Collection, MongoClient }    from 'mongodb'
 
 import logger                         from './winston'
@@ -16,9 +19,9 @@ class MongoDAO {
   private client: MongoClient
 
   constructor() {
-    logger.info(`Connecting to DB: %s`, process.env.MONGODB_URI)
+    logger.info(`Connecting to DB: %s`, appConfig.MONGODB_URI)
 
-    this.client = new MongoClient(<string>process.env.MONGODB_URI, {
+    this.client = new MongoClient(appConfig.MONGODB_URI, {
       /////////////////////////////////////////////////////////////////////////
       // TODO: 07/21/2021
       // - FIGURE OUT IF THESE OPTIONS HAVE BEEN DEPRECATED IN THE NEW RELEASE.
@@ -81,7 +84,7 @@ class MongoDAO {
    * Close the MongoDB connections
    */
   public close() {
-    logger.info(`Close connection to DB: %s`, process.env.MONGODB_URI)
+    logger.info(`Close connection to DB: %s`, appConfig.MONGODB_URI)
     this.client.close()
   }
 }

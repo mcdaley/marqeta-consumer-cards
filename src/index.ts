@@ -1,7 +1,9 @@
 //-----------------------------------------------------------------------------
 // index.ts
 //-----------------------------------------------------------------------------
-import './config/config'
+import AppConfig  from './config/app-config'
+const  appConfig  : AppConfig = AppConfig.getInstance()
+
 import express, { Application }   from 'express'
 import { Server }                 from 'node:http'
 
@@ -23,9 +25,9 @@ function handleShutdownGracefully() {
 /**
  * main()
  */
- const app: Application  = express()
+const app : Application  = express()
 
- app.use(express.json())
+app.use(express.json())
 
  // Routes
 app.use(`/api`, users)
@@ -37,7 +39,7 @@ const mongoClient = new MongoDAO()
 mongoClient.connect()
   .then( () => {
     // Start the server after connecting to the DB
-    const PORT: number | string = process.env.PORT || 4000
+    const PORT: number = appConfig.PORT
     server = app.listen(PORT, () => {
       logger.info(`TS-Mongo-Express app running on port ${PORT}`)
     })

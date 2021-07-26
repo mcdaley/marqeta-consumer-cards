@@ -1,6 +1,9 @@
 //-----------------------------------------------------------------------------
 // ./src/config/winston.js
 //-----------------------------------------------------------------------------
+import AppConfig  from './app-config'
+const  appConfig  = AppConfig.getInstance()
+
 import appRoot              from 'app-root-path'
 import winston, { format }  from 'winston'
 
@@ -13,14 +16,14 @@ const loggerAppFormat = printf(({ level, message, label, timestamp }) => {
 var options = {
   file: {
     level:            'debug',
-    filename:         `${appRoot}/logs/${process.env.NODE_ENV}.log`,
+    filename:         `${appRoot}/logs/${appConfig.NODE_ENV}.log`,
     handleExceptions: true,
     json:             true,
     maxsize:          5242880, // 5MB
     maxFiles:         5,
     colorize:         false,
     format:           combine(
-      label({ label: process.env.APP_NAME }),
+      label({ label: appConfig.APP_NAME }),
       timestamp({
         format: 'YYYY-MM-DD HH:mm:ss'
       }),
@@ -35,7 +38,7 @@ var options = {
     json:             false,
     colorize:         true,
     format:           combine(
-      label({ label: process.env.APP_NAME }),
+      label({ label: appConfig.APP_NAME }),
       timestamp({
         format: 'YYYY-MM-DD HH:mm:ss'
       }),
@@ -56,7 +59,7 @@ const logger = winston.createLogger({
 });
 
 // If in development mode then add the console output.
-if (process.env.NODE_ENV === 'development') {
+if (appConfig.NODE_ENV === 'development') {
   logger.add(new winston.transports.Console(options.console))
 }
 

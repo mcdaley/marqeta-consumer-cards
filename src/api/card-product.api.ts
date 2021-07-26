@@ -1,10 +1,12 @@
 //-----------------------------------------------------------------------------
-// src/api/card-products.ts
+// src/api/card-product.api.ts
 //-----------------------------------------------------------------------------
-import axios    from 'axios'
-import { Buffer } from 'buffer';
+import AppConfig  from '../config/app-config'
+const  appConfig  = AppConfig.getInstance()
 
-import logger   from '../config/winston'
+import axios                        from 'axios'
+
+import logger                       from '../config/winston'
 import { base64EncodeCredentials }  from '../utils/utils'
 
 /**
@@ -16,11 +18,10 @@ class CardProductAPIs {
   public static buildHeader() {
     // Use the app and admin tokens to make the call.
     const base64AuthToken: string = base64EncodeCredentials(
-      <string>process.env.APP_TOKEN, 
-      <string>process.env.ADMIN_TOKEN
+      appConfig.APP_TOKEN, 
+      appConfig.ADMIN_TOKEN
     )
 
-    //** const authToken = `MzE0MzVjNjAtNGFmZS00M2VkLTkyNTAtYjhmZDA5MmE2MjdlOmYwZDNkNjY2LTM5NGItNDRkYS1iYmNiLTczZjYwYzg1ZWRmNw==`
     const header  = {
       'Content-Type':   `application/json`,
       'Accept':         `application/json`,
